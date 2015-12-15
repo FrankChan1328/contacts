@@ -1,0 +1,11 @@
+Gradle 配置
+1.路径
+	GRADLE_HOME   D:\MyRuntime\gradle-2.8
+	path 中 加入   %GRADLE_HOME%\bin;
+
+2.eclipse 安装插件
+	help install new software
+	http://dist.springsource.com/release/TOOLS/gradle
+	
+3.mysql 配置
+

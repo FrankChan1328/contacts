@@ -1,0 +1,14 @@
+技术选择
+	spring 4 
+	springboot
+	ibatis
+	mysql
+	gradle
+	redis
+	
+步骤
+	1.搭建一个 基于 mysql 的web 项目
+	
+	2.处理 mysql 请求 ，队列化
+	
+	3.对队列进行分组 处理

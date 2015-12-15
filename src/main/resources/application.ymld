@@ -1,0 +1,2 @@
+db:
+  url:jdbc:mysql://localhost:3306/mysqlqueue

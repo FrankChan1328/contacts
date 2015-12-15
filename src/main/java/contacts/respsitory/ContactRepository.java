@@ -9,4 +9,6 @@ public interface ContactRepository {
 	List<Contact> findAll();
 
 	void save(Contact contact) ;
+		
+	String testCache();
 }

@@ -7,4 +7,6 @@ public interface ProductRepository {
 	Long getProductStorageCountByType(String productType);
 	
 	void updateProduct(Product product);
+	
+	Product getProductById(Long id);
 }

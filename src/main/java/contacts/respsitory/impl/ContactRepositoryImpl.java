@@ -18,8 +18,6 @@ public class ContactRepositoryImpl implements ContactRepository{
 	private ContactMapper contactMapper;
 
 	@Override
-	// 摘自网上，功能：做缓存
-	
 	public List<Contact> findAll() {
 		List<Contact> list = contactMapper.selectAllContacts();
 		return list;

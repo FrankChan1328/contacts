@@ -10,9 +10,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 
 
+
+
+
 //import contacts.ContactRepository;
 import contacts.entity.Contact;
+import contacts.entity.Product;
+import contacts.mapper.ProductMapper;
 import contacts.respsitory.ContactRepository;
+import contacts.respsitory.ProductRepository;
 
 @Controller
 @RequestMapping("/")
@@ -22,11 +28,9 @@ public class ContactController {
 	
 	@Autowired
 	private ContactRepository contactRepo;
-
+	
 	@Autowired
-	public ContactController(ContactRepository contactRepo) {
-		this.contactRepo = contactRepo;
-	}
+	private ProductRepository productRepo;
 
 	@RequestMapping(method=RequestMethod.GET)
 	public String home(Map<String,Object> model) {
@@ -34,7 +38,15 @@ public class ContactController {
 		model.put("contacts", contacts);
 		return "home";
 	}
-
+	
+	@RequestMapping(value="/product",method=RequestMethod.GET)
+	public String user(Map<String,Object> model) {
+		Long id = 1L;
+		Product product = productRepo.getProductById(id);
+		model.put("products", product);
+		return "product";
+	}
+	
 	@RequestMapping(method=RequestMethod.POST)
 	public String submit(Contact contact) {
 		contactRepo.save(contact);

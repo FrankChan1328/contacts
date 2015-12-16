@@ -17,7 +17,12 @@ import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.GenericToStringSerializer;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import redis.clients.jedis.JedisPoolConfig;
 
@@ -49,10 +54,9 @@ public class RedisConfig extends CachingConfigurerSupport{
 	
 	@Bean
 	// TODO 是否正确
-	public RedisTemplate<String,String> redisTemplate(){
-		RedisTemplate<String,String> redisTemplate = new RedisTemplate<String,String>();
+	public RedisTemplate<String,Object> redisTemplate(){
+		RedisTemplate<String,Object> redisTemplate = new RedisTemplate<String,Object>();
 		redisTemplate.setConnectionFactory(jedisConnectionFactory());
-		
 		// 
 		redisTemplate.setKeySerializer(new StringRedisSerializer());
 		redisTemplate.setHashValueSerializer(new GenericToStringSerializer <Object> (Object.class));
@@ -61,13 +65,28 @@ public class RedisConfig extends CachingConfigurerSupport{
 		return redisTemplate;
 	}
 	
+	@Bean
+	public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory factory) {
+		StringRedisTemplate template = new StringRedisTemplate(factory);  
+		Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
+		// 
+		ObjectMapper om = new ObjectMapper();
+		om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+		om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+		// 
+		jackson2JsonRedisSerializer.setObjectMapper(om);
+		
+		template.setValueSerializer(jackson2JsonRedisSerializer);
+		template.afterPropertiesSet();
+		return template;
+	}
+	
 	// TODO 摘抄自网上，功能：做缓存
 	@Bean  
 	public KeyGenerator wiselyKeyGenerator() {
 		return new KeyGenerator() {
 			@Override
-			public Object generate(Object target, Method method,
-					Object... params) {
+			public Object generate(Object target, Method method, Object... params) {
 				StringBuilder sb = new StringBuilder();
 				sb.append(target.getClass().getName());
 				sb.append(method.getName());

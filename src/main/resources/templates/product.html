@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Spring Boot Contacts</title>
+    <link rel="stylesheet" th:href="@{/style.css}" />
+  </head>
+
+  <body>
+    <h2>Spring Boot Contacts</h2>
+    
+    <ul th:each="product : ${products}">
+      <li>
+    	<span th:text="${product.id}">id</span>
+		<span th:text="${product.productType}">productType</span>
+		<span th:text="${product.storageCount}">storageCount</span>
+      </li>
+    </ul>
+    
+  </body>
+</html>

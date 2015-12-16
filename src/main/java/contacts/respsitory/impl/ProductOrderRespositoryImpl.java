@@ -1,12 +1,14 @@
 package contacts.respsitory.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import contacts.entity.ProductOrder;
 import contacts.mapper.ProductOrderMapper;
 import contacts.respsitory.ProductOrderRespository;
 
+@Repository
 public class ProductOrderRespositoryImpl implements ProductOrderRespository{
 
 	@Autowired 

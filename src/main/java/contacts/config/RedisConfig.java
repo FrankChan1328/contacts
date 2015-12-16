@@ -103,35 +103,4 @@ public class RedisConfig extends CachingConfigurerSupport{
 	public CacheManager cacheManager(@SuppressWarnings("rawtypes") RedisTemplate redisTemplate){
 		return new RedisCacheManager(redisTemplate);  
 	}
-
-//	@Bean
-//	RedisMessageListenerContainer container(RedisConnectionFactory connectionFactory,
-//			MessageListenerAdapter listenerAdapter) {
-//
-//		RedisMessageListenerContainer container = new RedisMessageListenerContainer();
-//		container.setConnectionFactory(connectionFactory);
-//		container.addMessageListener(listenerAdapter, new PatternTopic("chat"));
-//
-//		return container;
-//	}
-//
-//	@Bean
-//	MessageListenerAdapter listenerAdapter(Receiver receiver) {
-//		return new MessageListenerAdapter(receiver, "receiveMessage");
-//	}
-//
-//	@Bean
-//	Receiver receiver(CountDownLatch latch) {
-//		return new Receiver(latch);
-//	}
-//
-//	@Bean
-//	CountDownLatch latch() {
-//		return new CountDownLatch(1);
-//	}
-//
-//	@Bean
-//	StringRedisTemplate template(RedisConnectionFactory connectionFactory) {
-//		return new StringRedisTemplate(connectionFactory);
-//	}
 }

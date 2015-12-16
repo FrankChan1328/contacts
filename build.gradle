@@ -33,14 +33,9 @@ dependencies {
 	compile("mysql:mysql-connector-java")
 	compile("commons-dbcp:commons-dbcp")
 	
-	// jedis
-	// compile("redis.clients:jedis:2.7.2")
+	// spring data redis
 	compile("org.springframework.boot:spring-boot-starter-redis")
 	
-	// compile("com.fasterxml.jackson.core:jackson-databind:2.6.4")
-	// compile("com.fasterxml.jackson.core:jackson-core:2.2.2")
-	// compile("com.fasterxml.jackson.core:jackson-databind:2.2.2")
-	// compile ("com.fasterxml.jackson.core:jackson-annotations:2.2.2")
 }
 
 task wrapper(type: Wrapper) {

@@ -8,29 +8,24 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-
-
-
-
-
-//import contacts.ContactRepository;
 import contacts.entity.Contact;
 import contacts.entity.Product;
-import contacts.mapper.ProductMapper;
+import contacts.redis.RedisMessageSend;
 import contacts.respsitory.ContactRepository;
 import contacts.respsitory.ProductRepository;
 
 @Controller
 @RequestMapping("/")
 public class ContactController {
-
-//	private ContactRepository contactRepo;
 	
 	@Autowired
 	private ContactRepository contactRepo;
 	
 	@Autowired
 	private ProductRepository productRepo;
+	
+	@Autowired
+	private RedisMessageSend redisMessageSend;
 
 	@RequestMapping(method=RequestMethod.GET)
 	public String home(Map<String,Object> model) {
@@ -40,10 +35,14 @@ public class ContactController {
 	}
 	
 	@RequestMapping(value="/product",method=RequestMethod.GET)
-	public String user(Map<String,Object> model) {
+	public String product(Map<String,Object> model) throws InterruptedException {
 		Long id = 1L;
 		Product product = productRepo.getProductById(id);
 		model.put("products", product);
+		
+		// test redis message send and receive
+		redisMessageSend.sendMessage();
+		
 		return "product";
 	}
 	

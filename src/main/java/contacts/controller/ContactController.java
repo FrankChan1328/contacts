@@ -29,19 +29,22 @@ public class ContactController {
 
 	@RequestMapping(method=RequestMethod.GET)
 	public String home(Map<String,Object> model) {
+		// test redis message send and receive
+		redisMessageSend.sendMessage("Hello,redis ! From Home !");
+		
 		List<Contact> contacts = contactRepo.findAll();
 		model.put("contacts", contacts);
 		return "home";
 	}
 	
 	@RequestMapping(value="/product",method=RequestMethod.GET)
-	public String product(Map<String,Object> model) throws InterruptedException {
+	public String product(Map<String,Object> model) {
 		Long id = 1L;
 		Product product = productRepo.getProductById(id);
 		model.put("products", product);
 		
 		// test redis message send and receive
-		redisMessageSend.sendMessage();
+		redisMessageSend.sendMessage("Hello,redis ! From Product !");
 		
 		return "product";
 	}

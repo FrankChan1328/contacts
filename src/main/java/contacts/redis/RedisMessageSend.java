@@ -8,6 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
+/**
+ * 该类用来发送消息
+ *
+ */
 @Component
 public class RedisMessageSend {
 
@@ -19,11 +23,17 @@ public class RedisMessageSend {
 	@Autowired
 	private CountDownLatch countDownLatch;
 	
-	public void sendMessage() throws InterruptedException{
+	public void sendMessage(String msg){
 		LOGGER.info("Sending message......");
 		// 
-		redisTemplate.convertAndSend("chat", "Hello from Redis!");
+		// redisTemplate.convertAndSend("chat", "Hello from Redis!");
+		redisTemplate.convertAndSend("chat", msg);
 		// 
-		countDownLatch.await();
+		try {
+			countDownLatch.await();
+		} catch (InterruptedException e) {
+
+			e.printStackTrace();
+		}
 	}
 }

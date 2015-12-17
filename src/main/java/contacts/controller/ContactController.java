@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import contacts.entity.Contact;
 import contacts.entity.Product;
-import contacts.redis.RedisMessageSend;
+import contacts.redis.message.RedisMessageSend;
 import contacts.respsitory.ContactRepository;
 import contacts.respsitory.ProductRepository;
 

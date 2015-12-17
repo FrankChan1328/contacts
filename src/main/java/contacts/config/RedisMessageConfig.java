@@ -9,7 +9,7 @@ import org.springframework.data.redis.listener.PatternTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 
-import contacts.redis.Receiver;
+import contacts.redis.message.Receiver;
 
 @Configuration
 public class RedisMessageConfig {

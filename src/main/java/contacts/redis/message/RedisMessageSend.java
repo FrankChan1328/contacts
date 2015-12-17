@@ -1,4 +1,4 @@
-package contacts.redis;
+package contacts.redis.message;
 
 import java.util.concurrent.CountDownLatch;
 

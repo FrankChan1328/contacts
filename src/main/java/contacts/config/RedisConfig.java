@@ -36,10 +36,13 @@ public class RedisConfig extends CachingConfigurerSupport{
 	
 	@Bean
 	public RedisConnectionFactory jedisConnectionFactory() {
+		// config pool
+		// TODO ø…“‘≈‰÷√ƒƒ–©
 		JedisPoolConfig poolConfig = new JedisPoolConfig();
 		poolConfig.setMaxTotal(5);
 		poolConfig.setTestOnBorrow(true);
 		poolConfig.setTestOnReturn(true);
+		
 		JedisConnectionFactory ob = new JedisConnectionFactory(poolConfig);
 		ob.setUsePool(true);
 		ob.setHostName("localhost");

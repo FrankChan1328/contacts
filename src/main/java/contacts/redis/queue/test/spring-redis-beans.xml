@@ -1,0 +1,33 @@
+<beans xmlns="http://www.springframework.org/schema/beans" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd" default-autowire="byName">
+	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxActive" value="32"></property>
+		<property name="maxIdle" value="6"></property>
+		<property name="maxWait" value="15000"></property>
+		<property name="minEvictableIdleTimeMillis" value="300000"></property>
+		<property name="numTestsPerEvictionRun" value="3"></property>
+		<property name="timeBetweenEvictionRunsMillis" value="60000"></property>
+		<property name="whenExhaustedAction" value="1"></property>
+	</bean>
+	<bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" destroy-method="destroy">
+		<property name="poolConfig" ref="jedisPoolConfig"></property>
+		<property name="hostName" value="127.0.0.1"></property>
+		<property name="port" value="6379"></property>
+		<property name="password" value="0123456"></property>
+		<property name="timeout" value="15000"></property>
+		<property name="usePool" value="true"></property>
+	</bean>
+	<bean id="jedisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+		<property name="connectionFactory" ref="jedisConnectionFactory"></property>
+		<property name="defaultSerializer">
+			<bean class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
+		</property>
+	</bean>
+	<bean id="jedisQueueListener" class="com.sample.redis.sdr.QueueListener"/>
+	<bean id="jedisQueue" class="com.sample.redis.sdr.RedisQueue" destroy-method="destroy">
+		<property name="redisTemplate" ref="jedisTemplate"></property>
+		<property name="key" value="user:queue"></property>
+		<property name="listener" ref="jedisQueueListener"></property>
+	</bean>
+</beans>

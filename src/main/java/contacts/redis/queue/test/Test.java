@@ -16,7 +16,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 // 在程序运行期间，你可以通过redis-cli(客户端窗口)执行“lpush”，你会发现程序的控制台仍然能够正常打印队列信息。
 public class Test {
-	public static void main(String[] args) throws Exception{
+	public static void maint(String[] args) throws Exception{
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("classpath:spring-redis-beans.xml");
 		RedisQueue<String> redisQueue = (RedisQueue)context.getBean("jedisQueue");
 		redisQueue.pushFromHead("test:app");

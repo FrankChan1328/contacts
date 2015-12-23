@@ -6,16 +6,35 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.BoundListOperations;
 import org.springframework.data.redis.core.RedisConnectionUtils;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+/**
+ * 
+ * 目的：提供通用服务 的 Bean：
+ * <li> blocking 的 方式 . </li>
+ * <li> 常规队列(queue) 的方式 . </li>
+ * @param <T>
+ */
+@Component
 public class RedisQueue<T> implements InitializingBean,DisposableBean{
+	
+	@Autowired
 	private RedisTemplate redisTemplate;
-	private String key;
+	
+	@Autowired
+	private RedisQueueListener listener;//异步回调
+	
+	// TODO: get from properties
+	private String key = "user:queue";
+	
+	
 	private int cap = Short.MAX_VALUE;//最大阻塞的容量，超过容量将会导致清空旧数据
 	private byte[] rawKey;
 	private RedisConnectionFactory factory;
@@ -23,23 +42,11 @@ public class RedisQueue<T> implements InitializingBean,DisposableBean{
 	private BoundListOperations<String, T> listOperations;//noblocking
 	
 	private Lock lock = new ReentrantLock();//基于底层IO阻塞考虑
-	
-	private RedisQueueListener listener;//异步回调
+
 	private Thread listenerThread;
 	
 	private boolean isClosed;
-	
-	public void setRedisTemplate(RedisTemplate redisTemplate) {
-		this.redisTemplate = redisTemplate;
-	}
 
-	public void setListener(RedisQueueListener listener) {
-		this.listener = listener;
-	}
-
-	public void setKey(String key) {
-		this.key = key;
-	}
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
@@ -84,13 +91,19 @@ public class RedisQueue<T> implements InitializingBean,DisposableBean{
 		listOperations.leftPush(value);
 	}
 	
+	/**
+	 * 从队列的尾，插入
+	 * @param value
+	 */
 	public void pushFromTail(T value){
 		listOperations.rightPush(value);
 	}
 	
 	/**
-	 * noblocking
-	 * @return null if no item in queue
+	 * <p>方式：非阻塞方式</p>
+	 * 从队列的头部移除
+	 * <p>如果队列中没有，则返回 null .</p>
+	 * @return
 	 */
 	public T removeFromHead(){
 		return listOperations.leftPop();

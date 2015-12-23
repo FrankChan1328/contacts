@@ -56,8 +56,20 @@ public class RedisConfig extends CachingConfigurerSupport{
 	}
 	
 	@Bean
+	public RedisTemplate redisTemplate(){
+		// TODO set size 与 serialize 信息
+		RedisTemplate redisTemplate = new RedisTemplate();
+		redisTemplate.setConnectionFactory(jedisConnectionFactory());
+		//
+		redisTemplate.setKeySerializer(new StringRedisSerializer());
+		
+		return redisTemplate;
+	}
+	
+	
+	@Bean
 	// TODO 是否正确
-	public RedisTemplate<String,Object> redisTemplate(){
+	public RedisTemplate<String,Object> redisTemplateStringObject(){
 		RedisTemplate<String,Object> redisTemplate = new RedisTemplate<String,Object>();
 		redisTemplate.setConnectionFactory(jedisConnectionFactory());
 		// 

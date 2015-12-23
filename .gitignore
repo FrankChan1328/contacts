@@ -1,4 +1,4 @@
-# Windows image file caches
+﻿# Windows image file caches
 Thumbs.db
 ehthumbs.db
 
@@ -57,4 +57,4 @@ gradle
 
 #file
 TODO 事项
-学习笔记
+Redis 学习笔记

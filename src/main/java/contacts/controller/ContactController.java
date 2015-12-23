@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import contacts.entity.Contact;
 import contacts.entity.Product;
 import contacts.redis.message.RedisMessageSend;
+import contacts.redis.queue.test.RedisQueue;
 import contacts.respsitory.ContactRepository;
 import contacts.respsitory.ProductRepository;
 
@@ -26,6 +27,9 @@ public class ContactController {
 	
 	@Autowired
 	private RedisMessageSend redisMessageSend;
+	
+	@Autowired
+	private RedisQueue redisQueue;
 
 	@RequestMapping(method=RequestMethod.GET)
 	public String home(Map<String,Object> model) {
@@ -38,13 +42,19 @@ public class ContactController {
 	}
 	
 	@RequestMapping(value="/product",method=RequestMethod.GET)
-	public String product(Map<String,Object> model) {
+	public String product(Map<String,Object> model) throws Exception {
 		Long id = 1L;
 		Product product = productRepo.getProductById(id);
 		model.put("products", product);
 		
-		// test redis message send and receive
-		redisMessageSend.sendMessage("Hello,redis ! From Product !");
+//		// test redis message send and receive
+//		redisMessageSend.sendMessage("Hello,redis ! From Product !");
+		
+		redisQueue.pushFromHead("test:app");
+		Thread.sleep(15000);
+		redisQueue.pushFromHead("test:app");
+		Thread.sleep(15000);
+		redisQueue.destroy();
 		
 		return "product";
 	}

@@ -1,5 +1,8 @@
 package contacts.redis.queue.test;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class QueueListener<String> implements RedisQueueListener<String> {
 
 	@Override

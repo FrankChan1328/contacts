@@ -31,13 +31,15 @@ public class RedisQueue<T> implements InitializingBean,DisposableBean{
 	@Autowired
 	private RedisQueueListener listener;//异步回调
 	
+	@Autowired
+	private RedisConnectionFactory factory;
+	
 	// TODO: get from properties
 	private String key = "user:queue";
 	
-	
 	private int cap = Short.MAX_VALUE;//最大阻塞的容量，超过容量将会导致清空旧数据
 	private byte[] rawKey;
-	private RedisConnectionFactory factory;
+
 	private RedisConnection connection;//for blocking
 	private BoundListOperations<String, T> listOperations;//noblocking
 	
@@ -50,7 +52,6 @@ public class RedisQueue<T> implements InitializingBean,DisposableBean{
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		factory = redisTemplate.getConnectionFactory();
 		connection = RedisConnectionUtils.getConnection(factory);
 		rawKey = redisTemplate.getKeySerializer().serialize(key);
 		listOperations = redisTemplate.boundListOps(key);

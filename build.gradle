@@ -36,6 +36,11 @@ dependencies {
 	// spring data redis
 	compile("org.springframework.boot:spring-boot-starter-redis")
 	
+	// gearman
+	// compile("org.gearman:gearman-java:0.6")
+	
+	// compile("org.gearman:java-gearman-service:0.6.6")
+	
 }
 
 task wrapper(type: Wrapper) {
